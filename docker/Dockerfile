@@ -1,0 +1,4 @@
+FROM postgres:latest
+ENV POSTGRES_DB fulfillment
+ENV POSTGRES_USER fulfillment
+ENV POSTGRES_PASSWORD fulfillment
