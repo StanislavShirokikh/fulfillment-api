@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: fulfillment-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: fulfillment
+      POSTGRES_USER: fulfillment
+      POSTGRES_PASSWORD: fulfillment
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: DockerfileFulfillment
+    container_name: fulfillment-app
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/fulfillment
+      SPRING_DATASOURCE_USERNAME: fulfillment
+      SPRING_DATASOURCE_PASSWORD: fulfillment
+      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
+    ports:
+      - "8081:8081"
+
+volumes:
+  postgres_data:
